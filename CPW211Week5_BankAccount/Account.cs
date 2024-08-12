@@ -36,17 +36,25 @@ namespace CPW211Week5_BankAccount
         /// <returns>The new balance after the deposit</returns>
         public double Deposit(double amt)
         {
+            if (amt <= 0)
+            {
+                throw new ArgumentOutOfRangeException($"The {nameof(amt)} amount must be more than 0");
+            }
+
             Balance += amt;
             return Balance;
         }
 
         /// <summary>
         /// Withdraw an amount of money from the balance
+        /// and returns the updated balance
         /// </summary>
-        /// <param name="amt">The positive amount of money to be taken from the balance</param>
-        public void Withdraw(double amt)
+        /// <param name="amount">The positive amount of money to be taken from the balance</param>
+        /// <returns>Returns updated balance after withdraw</returns>
+        public double Withdraw(double amount)
         {
-            throw new NotImplementedException();
+            Balance -= amount;
+            return Balance;
         }
     }
 }
