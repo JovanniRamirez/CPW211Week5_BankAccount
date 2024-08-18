@@ -53,6 +53,14 @@ namespace CPW211Week5_BankAccount
         /// <returns>Returns updated balance after withdraw</returns>
         public double Withdraw(double amount)
         {
+            if (amount > Balance)
+            {
+                throw new ArgumentException($"{nameof(amount)} cannot be greater then {nameof(Balance)}.");
+            }
+            if (amount <= 0)
+            {
+                throw new ArgumentOutOfRangeException($"{nameof(amount)} must be greater than 0.");
+            }
             Balance -= amount;
             return Balance;
         }

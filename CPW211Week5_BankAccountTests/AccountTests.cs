@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace CPW211Week5_BankAccount.Tests
 {
@@ -87,24 +88,37 @@ namespace CPW211Week5_BankAccount.Tests
         }
 
         [TestMethod]
-        public void Withdraw_PositiveAmount_ReturnsUpdatedBalance()
+        [DataRow(100, 50)]
+        public void Withdraw_PositiveAmount_ReturnsUpdatedBalance
+                    (double initialDeposit, double withdrawalAmount)
         {
-            Assert.Fail();
+            //Arrange 
+            double expectedBalance = initialDeposit - withdrawalAmount;
+            acc.Deposit(initialDeposit);
+
+            //Act
+            double returnBalance = acc.Withdraw(withdrawalAmount);
+
+            //Assert
+            Assert.AreEqual(expectedBalance, returnBalance);
+
         }
 
         [TestMethod]
         [DataRow(0) ]
         [DataRow(-.01)]
         [DataRow(-1000)]
-        public void Withdraw_ZeroOrLess_Throws_ArgumentOutRangeException()
+        public void Withdraw_ZeroOrLess_Throws_ArgumentOutRangeException(double withdrawAmount)
         {
-            Assert.Fail();
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => acc.Withdraw(withdrawAmount));
         }
 
-
+        [TestMethod]
         public void Withdraw_MoreThanAvailableBalance_ThrowsArgumentException()
         {
-            Assert.Fail();
+            double withdrawAmount = 1000;
+
+            Assert.ThrowsException<ArgumentException> (()  => acc.Withdraw(withdrawAmount));
         }
 
     }
