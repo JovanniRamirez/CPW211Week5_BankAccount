@@ -14,11 +14,6 @@ namespace CPW211Week5_BankAccount.Tests
     {
         private Account acc;
 
-/*        public AccountTests()
-        {
-            acc = new Account("J. Doe");
-        }*/
-
         [TestInitialize]
         public void createDefaultAccount()
         {
