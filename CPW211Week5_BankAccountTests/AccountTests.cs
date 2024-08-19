@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CPW211Week5_BankAccount;
+using CPW211Week5_BankAccountTests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace CPW211Week5_BankAccount
+namespace CPW211Week5_BankAccountTests
 {
     [TestClass()]
     public class AccountTests
@@ -100,7 +101,7 @@ namespace CPW211Week5_BankAccount
         }
 
         [TestMethod]
-        [DataRow(0) ]
+        [DataRow(0)]
         [DataRow(-.01)]
         [DataRow(-1000)]
         public void Withdraw_ZeroOrLess_Throws_ArgumentOutRangeException(double withdrawAmount)
@@ -113,7 +114,7 @@ namespace CPW211Week5_BankAccount
         {
             double withdrawAmount = 1000;
 
-            Assert.ThrowsException<ArgumentException> (()  => acc.Withdraw(withdrawAmount));
+            Assert.ThrowsException<ArgumentException>(() => acc.Withdraw(withdrawAmount));
         }
 
     }
