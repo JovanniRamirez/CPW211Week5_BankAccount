@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CPW211Week5_BankAccount;
+using CPW211Week5_BankAccountTests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace CPW211Week5_BankAccount
+namespace CPW211Week5_BankAccountTests
 {
     [TestClass()]
     public class AccountTests
@@ -17,7 +18,7 @@ namespace CPW211Week5_BankAccount
         [TestInitialize]
         public void createDefaultAccount()
         {
-            acc = new Account("J. Doe");
+            acc = new Account("J Doe");
         }
 
         [TestMethod()]
@@ -25,6 +26,7 @@ namespace CPW211Week5_BankAccount
         [DataRow(.01)]
         [DataRow(1.999)]
         [DataRow(9_999.99)]
+        [TestCategory("Deposit")]
         public void Deposit_APositiveAmount_AddToBalance(double depositAmount)
         {
             acc.Deposit(depositAmount);
@@ -33,11 +35,12 @@ namespace CPW211Week5_BankAccount
         }
 
         [TestMethod]
+        [TestCategory("Deposit")]
         public void Deposit_APositiveAmount_ReturnsUpdatedBalance()
         {
             // AAA - Arrange, Act, Assert
             // Arrange
-            Account acc = new Account("J. Doe");
+            Account acc = new Account("J Doe");
             double depositAmount = 100;
             double expectedReturn = 100;
 
@@ -51,6 +54,7 @@ namespace CPW211Week5_BankAccount
         [TestMethod]
         [DataRow(-1)]
         [DataRow(0)]
+        [TestCategory("Deposit")]
         public void Deposit_ZeroOrLess_ThrowsArgumentException(double invalidDepositAmount)
         {
             // Arrange
@@ -65,6 +69,7 @@ namespace CPW211Week5_BankAccount
         }
 
         [TestMethod]
+        [TestCategory("Withdraw")]
         public void Withdraw_PositiveAmount_DecreasesBalance()
         {
             // Arrange
@@ -84,6 +89,7 @@ namespace CPW211Week5_BankAccount
 
         [TestMethod]
         [DataRow(100, 50)]
+        [TestCategory("Withdraw")]
         public void Withdraw_PositiveAmount_ReturnsUpdatedBalance
                     (double initialDeposit, double withdrawalAmount)
         {
@@ -100,28 +106,60 @@ namespace CPW211Week5_BankAccount
         }
 
         [TestMethod]
-        [DataRow(0) ]
+        [DataRow(0)]
         [DataRow(-.01)]
         [DataRow(-1000)]
+        [TestCategory("Withdraw")]
         public void Withdraw_ZeroOrLess_Throws_ArgumentOutRangeException(double withdrawAmount)
         {
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => acc.Withdraw(withdrawAmount));
         }
 
         [TestMethod]
+        [TestCategory("Withdraw")]
         public void Withdraw_MoreThanAvailableBalance_ThrowsArgumentException()
         {
             double withdrawAmount = 1000;
 
-            Assert.ThrowsException<ArgumentException> (()  => acc.Withdraw(withdrawAmount));
+            Assert.ThrowsException<ArgumentException>(() => acc.Withdraw(withdrawAmount));
+        }
+
+        [TestMethod]
+        public void Owner_SetAsNull_ThrowsArgumentNullException()
+        {
+            //acc.Owner = null;
+            Assert.ThrowsException<ArgumentNullException>(() => acc.Owner = null);
+        }
+
+        [TestMethod]
+        public void Owner_SetAsWhiteSpaceOrEmptyString_ThrowsArgumentException()
+        {
+            Assert.ThrowsException<ArgumentException> ( () => acc.Owner = String.Empty);
+            Assert.ThrowsException<ArgumentException>(() => acc.Owner = "   ");
+        }
+
+        [TestMethod]
+        [DataRow("Joe")]
+        [DataRow("Joe Ortiz")]
+        [DataRow("Joseph Ortizio Smith")]
+        public void Owner_SetAsUpTo20Characters_SetSuccessfully(string ownerName)
+        {
+            acc.Owner = ownerName;
+            Assert.AreEqual(ownerName, acc.Owner);
+        }
+
+        [TestMethod]
+        [DataRow("Joe 3rd")]
+        [DataRow("Joseph Ortizio Smiths")]
+        [DataRow("#$%$")]
+        public void Owner_InvalidOwnerName_ThrowsArgumentException(string ownerName)
+        {
+            //acc.Owner = ownerName;
+            Assert.ThrowsException<ArgumentException>(() => acc.Owner = ownerName);
         }
 
     }
 }
-/// Withdrawing a positive amount - returns updated balance
-// Withdrawing 0 - Throws ArgumentOutRange exception
-// Withdrawing negative amount - Throws ArgumentOutRange exception
-// Withdrawing more than available balance - ArgumentException
 
 
 
