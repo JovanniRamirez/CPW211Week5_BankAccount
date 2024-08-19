@@ -26,6 +26,7 @@ namespace CPW211Week5_BankAccountTests
         [DataRow(.01)]
         [DataRow(1.999)]
         [DataRow(9_999.99)]
+        [TestCategory("Deposit")]
         public void Deposit_APositiveAmount_AddToBalance(double depositAmount)
         {
             acc.Deposit(depositAmount);
