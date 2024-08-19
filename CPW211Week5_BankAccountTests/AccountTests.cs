@@ -18,7 +18,7 @@ namespace CPW211Week5_BankAccountTests
         [TestInitialize]
         public void createDefaultAccount()
         {
-            acc = new Account("J. Doe");
+            acc = new Account("J Doe");
         }
 
         [TestMethod()]
@@ -35,6 +35,7 @@ namespace CPW211Week5_BankAccountTests
         }
 
         [TestMethod]
+        [TestCategory("Deposit")]
         public void Deposit_APositiveAmount_ReturnsUpdatedBalance()
         {
             // AAA - Arrange, Act, Assert
@@ -53,6 +54,7 @@ namespace CPW211Week5_BankAccountTests
         [TestMethod]
         [DataRow(-1)]
         [DataRow(0)]
+        [TestCategory("Deposit")]
         public void Deposit_ZeroOrLess_ThrowsArgumentException(double invalidDepositAmount)
         {
             // Arrange
@@ -67,6 +69,7 @@ namespace CPW211Week5_BankAccountTests
         }
 
         [TestMethod]
+        [TestCategory("Withdraw")]
         public void Withdraw_PositiveAmount_DecreasesBalance()
         {
             // Arrange
@@ -86,6 +89,7 @@ namespace CPW211Week5_BankAccountTests
 
         [TestMethod]
         [DataRow(100, 50)]
+        [TestCategory("Withdraw")]
         public void Withdraw_PositiveAmount_ReturnsUpdatedBalance
                     (double initialDeposit, double withdrawalAmount)
         {
@@ -105,12 +109,14 @@ namespace CPW211Week5_BankAccountTests
         [DataRow(0)]
         [DataRow(-.01)]
         [DataRow(-1000)]
+        [TestCategory("Withdraw")]
         public void Withdraw_ZeroOrLess_Throws_ArgumentOutRangeException(double withdrawAmount)
         {
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => acc.Withdraw(withdrawAmount));
         }
 
         [TestMethod]
+        [TestCategory("Withdraw")]
         public void Withdraw_MoreThanAvailableBalance_ThrowsArgumentException()
         {
             double withdrawAmount = 1000;
@@ -118,12 +124,42 @@ namespace CPW211Week5_BankAccountTests
             Assert.ThrowsException<ArgumentException>(() => acc.Withdraw(withdrawAmount));
         }
 
+        [TestMethod]
+        public void Owner_SetAsNull_ThrowsArgumentNullException()
+        {
+            //acc.Owner = null;
+            Assert.ThrowsException<ArgumentNullException>(() => acc.Owner = null);
+        }
+
+        [TestMethod]
+        public void Owner_SetAsWhiteSpaceOrEmptyString_ThrowsArgumentException()
+        {
+            Assert.ThrowsException<ArgumentException> ( () => acc.Owner = String.Empty);
+            Assert.ThrowsException<ArgumentException>(() => acc.Owner = "   ");
+        }
+
+        [TestMethod]
+        [DataRow("Joe")]
+        [DataRow("Joe Ortiz")]
+        [DataRow("Joseph Ortizio Smith")]
+        public void Owner_SetAsUpTo20Characters_SetSuccessfully(string ownerName)
+        {
+            acc.Owner = ownerName;
+            Assert.AreEqual(ownerName, acc.Owner);
+        }
+
+        [TestMethod]
+        [DataRow("Joe 3rd")]
+        [DataRow("Joseph Ortizio Smiths")]
+        [DataRow("#$%$")]
+        public void Owner_InvalidOwnerName_ThrowsArgumentException(string ownerName)
+        {
+            //acc.Owner = ownerName;
+            Assert.ThrowsException<ArgumentException>(() => acc.Owner = ownerName);
+        }
+
     }
 }
-/// Withdrawing a positive amount - returns updated balance
-// Withdrawing 0 - Throws ArgumentOutRange exception
-// Withdrawing negative amount - Throws ArgumentOutRange exception
-// Withdrawing more than available balance - ArgumentException
 
 
 
