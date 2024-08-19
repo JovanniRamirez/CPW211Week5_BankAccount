@@ -13,7 +13,7 @@ namespace CPW211Week5_BankAccountTests
     [TestClass()]
     public class AccountTests
     {
-        private Account? acc;
+        private Account acc;
 
         [TestInitialize]
         public void createDefaultAccount()
@@ -40,7 +40,7 @@ namespace CPW211Week5_BankAccountTests
         {
             // AAA - Arrange, Act, Assert
             // Arrange
-            Account acc = new Account("J. Doe");
+            Account acc = new Account("J Doe");
             double depositAmount = 100;
             double expectedReturn = 100;
 
