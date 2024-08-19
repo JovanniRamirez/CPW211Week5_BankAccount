@@ -13,7 +13,7 @@ namespace CPW211Week5_BankAccountTests
     [TestClass()]
     public class AccountTests
     {
-        private Account acc;
+        private Account? acc;
 
         [TestInitialize]
         public void createDefaultAccount()
